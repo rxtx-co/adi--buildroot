@@ -51,6 +51,7 @@ Setup the board as follows:
 Build and install the ADI fork of OpenOCD:
 
   $ git clone https://github.com/analogdevicesinc/openocd
+  $ cd openocd
   $ ./bootstrap
   $ ./configure
   $ make -j$(nproc)
@@ -106,7 +107,8 @@ switches to enable and disable peripherals.
   TX/RX lines. It defaults to disabled on boot.
 - The SD controller on the ADSP-SC598 is routed to an eMMC on the SoM and the
   SD card slot on the carrier board. Only one can be used at a time.
-- A MCU was added to the carrier board to facilitate debugging, but is not used
+- A MCU was added to the carrier board to facilitate debugging, but it is not
+  used
 - SPI2 and a single chip select are routed to the MCU, 128 MByte Octal SPI
   flash, and a FT422 that is in turn routed to the USB QSPI connector (P2).
   A set of bus switches controls whether the chip select reaches each
