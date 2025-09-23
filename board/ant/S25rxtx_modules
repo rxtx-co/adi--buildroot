@@ -1,0 +1,25 @@
+#!/bin/sh
+#
+# Start mdev....
+#
+
+case "$1" in
+  start)
+	echo "Loading RXTX modules"
+	for f in $(ls -1 /RXTX/modules/*.ko);
+	do
+		echo -n "\t${f} : "
+		modprobe ${f}
+		[ $? = 0 ] && echo "OK" || echo "FAIL"
+	done
+	;;
+  stop)
+	;;
+  restart|reload)
+	;;
+  *)
+	echo "Usage: $0 {start|stop|restart}"
+	exit 1
+esac
+
+exit $?

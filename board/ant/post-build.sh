@@ -53,6 +53,7 @@ mkdir -p ${TARGET_DIR}/mnt/jffs2
 mkdir -p ${TARGET_DIR}/mnt/msd
 mkdir -p ${TARGET_DIR}/etc/dropbear
 
+
 ${INSTALL} -D -m 0755 ${BOARD_DIR}/update.sh ${TARGET_DIR}/sbin/
 ${INSTALL} -D -m 0755 ${BOARD_DIR}/update_from_github.sh ${TARGET_DIR}/sbin/
 ${INSTALL} -D -m 0755 ${BOARD_DIR}/update_frm.sh ${TARGET_DIR}/sbin/
@@ -92,3 +93,12 @@ ln -sf ../../wpa_supplicant/ifupdown.sh ${TARGET_DIR}/etc/network/if-pre-up.d/wp
 ln -sf ../../wpa_supplicant/ifupdown.sh ${TARGET_DIR}/etc/network/if-post-down.d/wpasupplicant
 
 ln -sf device_reboot ${TARGET_DIR}/usr/sbin/pluto_reboot
+
+# ---- RXTX ----
+mkdir -p ${TARGET_DIR}/RXTX/modules
+mv ${TARGET_DIR}/rxtx-*.ko ${TARGET_DIR}/RXTX/modules/
+
+${INSTALL} -D -m 0755 ${BOARD_DIR}/S25rxtx_modules ${TARGET_DIR}/etc/init.d/
+# --------------
+
+
