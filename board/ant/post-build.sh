@@ -94,11 +94,5 @@ ln -sf ../../wpa_supplicant/ifupdown.sh ${TARGET_DIR}/etc/network/if-post-down.d
 
 ln -sf device_reboot ${TARGET_DIR}/usr/sbin/pluto_reboot
 
-# ---- RXTX ----
-mkdir -p ${TARGET_DIR}/RXTX/modules
-mv ${TARGET_DIR}/rxtx-*.ko ${TARGET_DIR}/RXTX/modules/
-
-${INSTALL} -D -m 0755 ${BOARD_DIR}/S25rxtx_modules ${TARGET_DIR}/etc/init.d/
-# --------------
 
 

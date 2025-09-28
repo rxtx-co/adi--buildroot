@@ -9,7 +9,7 @@ case "$1" in
 	for f in $(ls -1 /RXTX/modules/*.ko);
 	do
 		echo -n "\t${f} : "
-		modprobe ${f}
+		insmod ${f}
 		[ $? = 0 ] && echo "OK" || echo "FAIL"
 	done
 	;;
