@@ -24,6 +24,8 @@ create_system_files () {
 	ETH_NETMASK=`fw_printenv -n netmask_eth 2> /dev/null || echo 255.255.255.0`
 	ETH_GATEWAY=`fw_printenv -n eth_gateway 2> /dev/null || echo 192.168.1.1`
 
+	ETH_HWADDR=`fw_printenv -n ether_hwaddr 2> /dev/null`
+
 	WLAN_SSID=`fw_printenv -n ssid_wlan 2> /dev/null`
 	WLAN_PWD=`fw_printenv -n pwd_wlan 2> /dev/null`
 	WLAN_IPADDR=`fw_printenv -n ipaddr_wlan 2> /dev/null`
@@ -37,6 +39,7 @@ create_system_files () {
 	echo "end $IPADDR_HOST" >> $UDHCPD_CONF
 	echo "interface usb0" >> $UDHCPD_CONF
 	echo "option subnet $NETMASK" >> $UDHCPD_CONF
+
 
 	### /etc/network/interfaces ###
 	echo -e "auto lo\n""iface lo inet loopback\n" > $IFAC
@@ -52,6 +55,13 @@ create_system_files () {
 	else
 		echo -e "iface eth0 inet dhcp\n" >> $IFAC
 	fi
+
+	# set ethernet mac address
+	if [ -n "$ETH_IPADDR" -a -n "$ETH_HWADDR" ]
+	then
+		echo -e "\thwaddress ether $ETH_HWADDR\n" >> $IFAC
+	fi
+
 
 	### /etc/wpa.conf ###
 	if [ -n "$WLAN_SSID" ]
