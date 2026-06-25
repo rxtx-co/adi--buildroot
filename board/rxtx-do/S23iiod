@@ -1,0 +1,43 @@
+#!/bin/sh
+
+source /etc/device_config
+
+IIOD_OPTS="-D -n $ENDPOINTS -F /dev/iio_ffs"
+
+create_iiod_context_attributes() {
+	model=`cat /sys/firmware/devicetree/base/model | tr / -`
+
+	echo "[Context Attributes]" > /etc/libiio.ini
+	echo "hw_model=$model" >> /etc/libiio.ini
+	echo "fw_version=`grep device-fw /opt/VERSIONS | cut -d ' ' -f 2`" >> /etc/libiio.ini
+}
+
+case "$1" in
+  start)
+	echo -n "Starting IIOD: "
+
+	create_iiod_context_attributes
+
+        mkdir -p /dev/iio_ffs
+        mount iio_ffs -t functionfs /dev/iio_ffs 2> /dev/null
+
+	start-stop-daemon -S -b -q -m -p /var/run/iiod.pid -x  /usr/sbin/iiod  -- $IIOD_OPTS
+	[ $? = 0 ] && echo "OK" || echo "FAIL"
+
+	;;
+  stop)
+	echo "Stopping IIOD:"
+	start-stop-daemon -K -q -p /var/run/iiod.pid 2>/dev/null
+
+	;;
+  restart|reload)
+	"$0" stop
+	"$0" start
+	;;
+  *)
+	echo "Usage: $0 {start|stop|restart}"
+	exit 1
+esac
+
+exit $?
+

@@ -1,0 +1,17 @@
+#! /bin/sh
+
+case "$1" in
+	start|"")
+		echo -n "Set CPU scaling governor: "
+		CPU_SCALING_GOVERNOR=`fw_printenv -n cpu_scaling_governor 2> /dev/null || 'ondemand'`
+		echo ${CPU_SCALING_GOVERNOR} > /sys/devices/system/cpu/cpufreq/policy0/scaling_governor
+		[ $? = 0 ] && echo "OK" || echo "FAIL"
+		;;
+	stop)
+
+		;;
+	*)
+		echo "Usage: $0 {start|stop}" >&2
+		exit 1
+		;;
+esac
